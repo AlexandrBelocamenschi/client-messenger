@@ -19,7 +19,7 @@ public class Program
     Console.Write("Program.ip to connect to: ");
     Program.ip = Console.ReadLine();
     //Program.ip = "https://192.168.11.57:5171";
-    Console.WriteLine($"{Program.ip}/Chat/all-users-chats");
+    Console.WriteLine($"https://{Program.ip}:5171/Chat/all-users-chats");
     //return;
     Console.Write("Token: ");
     string token = Console.ReadLine();
@@ -30,7 +30,7 @@ public class Program
     };
     try{
       string jsonRequest = JsonSerializer.Serialize(userInfo);
-      string jsonResponse = await PostRequestAsync($"{Program.ip}/Chat/all-users-chats", jsonRequest);
+      string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Chat/all-users-chats", jsonRequest);
       var options = new JsonSerializerOptions{
         PropertyNameCaseInsensitive = true
       };
@@ -59,7 +59,7 @@ public class Program
       Console.Write("Write command: ");
       command = Console.ReadLine();
       switch(command){
-        case "/chuuuat":
+        case "/chat":
           System.Console.Write("Write chatId: ");
           string chatID = Console.ReadLine();
           _ = Task.Run(() => GetLastMessagesInChat(token, chatID));
@@ -76,7 +76,7 @@ public class Program
             };
             try{
               string jsonRequest = JsonSerializer.Serialize(UserMessage);
-              string jsonResponse = await PostRequestAsync($"{Program.ip}/Message/save", jsonRequest);
+              string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Message/save", jsonRequest);
             }
             catch (Exception ex){
               Console.WriteLine("Ошибка: " + ex.Message);
@@ -92,7 +92,7 @@ public class Program
           };
           try{
             string jsonRequest = JsonSerializer.Serialize(chatInfoType1);
-            string jsonResponse = await PostRequestAsync($"{Program.ip}/Chat/new-chat", jsonRequest);
+            string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Chat/new-chat", jsonRequest);
             var options = new JsonSerializerOptions{
               PropertyNameCaseInsensitive = true
             };
@@ -126,7 +126,7 @@ public class Program
           };
           try{
             string jsonRequest = JsonSerializer.Serialize(chatInfoType2);
-            string jsonResponse = await PostRequestAsync($"{Program.ip}/Chat/add-user-in-chat", jsonRequest);
+            string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Chat/add-user-in-chat", jsonRequest);
             var options = new JsonSerializerOptions{
               PropertyNameCaseInsensitive = true
             };
@@ -151,7 +151,7 @@ public class Program
         case "/all-chat":
           try{
             string jsonRequest = JsonSerializer.Serialize(userInfo);
-            string jsonResponse = await PostRequestAsync($"{Program.ip}/Chat/all-users-chats", jsonRequest);
+            string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Chat/all-users-chats", jsonRequest);
             var options = new JsonSerializerOptions{
               PropertyNameCaseInsensitive = true
             };
@@ -175,6 +175,11 @@ public class Program
             Console.WriteLine("Ошибка: " + ex.Message);
           }
           break;
+        case "/help": Console.WriteLine("All commands: \n" + 
+                                        "/chat - enter in chat\n" + 
+                                        "/new-chat - create new chat\n" + 
+                                        "/chat-add - add user in chat\n" + 
+                                        "/all-chat - all chats"); break;
         default: command = ""; break;
       }
     }
@@ -189,7 +194,7 @@ public class Program
     };
     try{
       string jsonRequest = JsonSerializer.Serialize(messageType2);
-      string jsonResponse = await PostRequestAsync($"{Program.ip}/Message/get-chat-messages", jsonRequest);
+      string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Message/get-chat-messages", jsonRequest);
       var options = new JsonSerializerOptions{
         PropertyNameCaseInsensitive = true
       };
@@ -223,7 +228,7 @@ public class Program
       };
       try{
         string jsonRequest = JsonSerializer.Serialize(messageType3);
-        string jsonResponse = await PostRequestAsync($"{Program.ip}/Message/get-new-chat-messages", jsonRequest);
+        string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Message/get-new-chat-messages", jsonRequest);
         var options = new JsonSerializerOptions{
           PropertyNameCaseInsensitive = true
         };

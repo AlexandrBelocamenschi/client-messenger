@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/alex/Desktop/client/client.csproj",
+      "projectUniqueName": "/home/alex/Desktop/client-messenger/client.csproj",
       "projectName": "client",
-      "projectPath": "/home/alex/Desktop/client/client.csproj",
+      "projectPath": "/home/alex/Desktop/client-messenger/client.csproj",
       "packagesPath": "/home/alex/.nuget/packages/",
-      "outputPath": "/home/alex/Desktop/client/obj/",
+      "outputPath": "/home/alex/Desktop/client-messenger/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/alex/.nuget/NuGet/NuGet.Config"
