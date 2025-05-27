@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using System.Text;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 
 
 public class Program
@@ -24,23 +25,23 @@ public class Program
     Console.Write("Token: ");
     string token = Console.ReadLine();
 
-    Console.WriteLine("All Chats:");
+    Console.WriteLine("Offline messages:");
     UserInfo userInfo = new UserInfo{
       SessionToken = token
     };
     try{
       string jsonRequest = JsonSerializer.Serialize(userInfo);
-      string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Chat/all-users-chats", jsonRequest);
+      string jsonResponse = await PostRequestAsync($"https://{Program.ip}:5171/Message/get-new-messages", jsonRequest);
       var options = new JsonSerializerOptions{
         PropertyNameCaseInsensitive = true
       };
-      ChatsResponseData response = JsonSerializer.Deserialize<ChatsResponseData>(jsonResponse, options);
+      MessageType4 response = JsonSerializer.Deserialize<MessageType4>(jsonResponse, options);
       if (response == null){
         Console.WriteLine("Ошибка: Не удалось распарсить ответ.");
       }
-      else if (response.status == "success" && response.data?.chats != null){
+      else if (response.status == "success" && response.data.chats != null){
         foreach(var chat in response.data.chats){
-          Console.WriteLine("Id: "+ chat.ChatID + " Chat Name: " + chat.ChatName);
+          Console.WriteLine("Id: "+ chat.ChatID + " Chat Name: " + chat.ChatName + " Last message: " + chat.LastMessage.Content);
         }
       }
       else if (response.status == "error"){
@@ -275,6 +276,23 @@ public class Program
     public string ChatID {get;set;}
     public DateTime Time { get;set; }
   }
+  
+    public class MessageType4{
+    public string status { get; set; }
+    public ResponseChatData4 data { get; set; }
+    public string error {get; set;}
+  }
+
+  public class ResponseChatData4{
+    public List<ResponseDataType4> chats {get;set;}
+  }
+
+  public class ResponseDataType4
+  {
+    public int ChatID {get; set;}
+    public string ChatName {get; set;}
+    public MessageDto LastMessage { get; set; }
+  }
 
   public class ResponseMessageData{
     public string status { get; set; }
@@ -334,3 +352,4 @@ public class Program
     public string SessionToken {get;set;}
   }
 }
+
